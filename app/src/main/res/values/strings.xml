@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">calendar</string>
+    <string name="sun">일</string>
+    <string name="mon">월</string>
+    <string name="thu">화</string>
+    <string name="wed">수</string>
+    <string name="thur">목</string>
+    <string name="fri">금</string>
+    <string name="sat">토</string>
+    <string name="actionbar_menu1">MENU1</string>
+    <string name="actionbar_menu2">MENU2</string>
+    <string name="calendar_right">calendar_right</string>
+    <string name="calendar_left">calendar_left</string>
+    <string name="year_month">%d %d월</string>
+</resources>
