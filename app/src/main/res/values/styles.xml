@@ -34,14 +34,10 @@
         <item name="colorPrimary">#9F87C1</item>
         <item name="colorPrimaryDark">#3700b3</item>
         <item name="colorAccent">#03dac5</item>
-        <item name="android:actionBarStyle">@style/ActionBar</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
-    <style name="ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
-        <item name="android:background">#FF5722</item> <!-- Action Bar 배경 색상 -->
-        <item name="android:titleTextStyle">@style/ActionBarTitleText</item>
-    </style>
-    <style name="ActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
-        <item name="android:textColor">#FFFFFF</item> <!-- 제목 텍스트 색상 -->
-        <item name="android:textSize">20sp</item> <!-- 제목 텍스트 크기 -->
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 </resources>

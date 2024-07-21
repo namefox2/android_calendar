@@ -7,9 +7,10 @@
     <string name="thur">목</string>
     <string name="fri">금</string>
     <string name="sat">토</string>
-    <string name="actionbar_menu1">MENU1</string>
-    <string name="actionbar_menu2">MENU2</string>
+    <string name="success_percent">성공비율</string>
+    <string name="random_list">랜덤리스트 관리</string>
     <string name="calendar_right">calendar_right</string>
     <string name="calendar_left">calendar_left</string>
     <string name="year_month">%d %d월</string>
+    <string name="promise">PROMISE</string>
 </resources>

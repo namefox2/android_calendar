@@ -2,13 +2,13 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/actionbar_menu1"
-        android:title="@string/actionbar_menu1"
+        android:id="@+id/bar_success_percent"
+        android:title="@string/success_percent"
         android:orderInCategory="0"
         app:showAsAction="never" />
     <item
-        android:id="@+id/actionbar_menu2"
-        android:title="@string/actionbar_menu2"
+        android:id="@+id/bar_random_list"
+        android:title="@string/random_list"
         android:orderInCategory="1"
         app:showAsAction="never" />
 </menu>
