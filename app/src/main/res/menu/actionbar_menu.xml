@@ -11,4 +11,9 @@
         android:title="@string/random_list"
         android:orderInCategory="1"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/bar_change_promise"
+        android:title="@string/change_promise"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
 </menu>

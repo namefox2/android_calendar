@@ -4,32 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <include
         android:id="@+id/toolbar"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-        app:contentInsetStart="0dp"
-        app:contentInsetEnd="0dp"
+        layout="@layout/toolbar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/toolbar_title"
-            android:textColor="@color/black"
-            android:textSize="40sp"
-            android:gravity="center_horizontal"
-            />
-    </androidx.appcompat.widget.Toolbar>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
     <include
         android:id="@+id/includedCalendar"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
         layout="@layout/calendar_frame"
-        />
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

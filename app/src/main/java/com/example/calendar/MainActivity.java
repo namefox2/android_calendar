@@ -1,34 +1,48 @@
 package com.example.calendar;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.view.Window;
+import android.view.WindowManager;
 
-import org.w3c.dom.Text;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity
 {
+    Toolbar toolbar;
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TextView toolbarTitle = findViewById(R.id.toolbar_title);
-        String toolbar_text = "TODO";
-        toolbarTitle.setText(toolbar_text);
+        ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-        if(getSupportActionBar() != null)
-        {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+//        navigationView = findViewById(R.id.navigationView);
+
+
+//        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+//        String toolbar_text = "TODO";
+//        toolbarTitle.setText(toolbar_text);
+
+//        if(getSupportActionBar() != null)
+//        {
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
 //        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
 //        if(actionBar != null)
 //        {
@@ -41,6 +55,8 @@ public class MainActivity extends AppCompatActivity
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_menu, menu);
+        toolbar.getMenu().clear();
+
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item)
@@ -55,6 +71,20 @@ public class MainActivity extends AppCompatActivity
         {
             return true;
         }
+        else if(id == R.id.bar_change_promise)
+        {
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
+        Window win = activity.getWindow();
+        WindowManager.LayoutParams winParams = win.getAttributes();
+        if (on) {
+            winParams.flags |= bits;
+        } else {
+            winParams.flags &= ~bits;
+        }
+        win.setAttributes(winParams);
     }
 }
