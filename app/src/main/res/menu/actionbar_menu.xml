@@ -4,15 +4,15 @@
         android:id="@+id/bar_success_percent"
         android:title="@string/success_percent"
         android:orderInCategory="0"
-        android:icon="@drawable/calendar_right"/>
+        android:icon="@mipmap/nav_percent"/>
     <item
         android:id="@+id/bar_random_list"
         android:title="@string/random_list"
         android:orderInCategory="1"
-        android:icon="@drawable/calendar_right"/>
+        android:icon="@mipmap/nav_list"/>
     <item
         android:id="@+id/bar_change_promise"
         android:title="@string/change_promise"
         android:orderInCategory="2"
-        android:icon="@drawable/calendar_right"/>
+        android:icon="@mipmap/nav_promise"/>
 </menu>

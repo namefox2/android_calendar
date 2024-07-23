@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         if (navigationView != null) {
             navigationView.setNavigationItemSelectedListener(item -> {
-                item.setChecked(true);
                 mDrawerLayout.closeDrawers();
                 Log.d("TEST2", "IN");
                 int id = item.getItemId();
