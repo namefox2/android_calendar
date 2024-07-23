@@ -7,7 +7,7 @@
     android:background="?attr/colorPrimary"
     android:minHeight="?attr/actionBarSize"
     android:theme="?attr/actionBarTheme"
-    app:navigationIcon="@drawable/abc_vector_test">
+    app:navigationIcon="@drawable/menu_bar">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

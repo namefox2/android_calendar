@@ -3,14 +3,15 @@ package com.example.calendar;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity
 {
     Toolbar toolbar;
     NavigationView navigationView;
+    DrawerLayout mDrawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,28 +29,36 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        if(actionBar != null)
+        {
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.menu_bar);
+        }
 
-//        navigationView = findViewById(R.id.navigationView);
+        navigationView = findViewById(R.id.nav_view);
+        mDrawerLayout = findViewById(R.id.nav_drawer);
 
-
-//        TextView toolbarTitle = findViewById(R.id.toolbar_title);
-//        String toolbar_text = "TODO";
-//        toolbarTitle.setText(toolbar_text);
-
-//        if(getSupportActionBar() != null)
-//        {
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        }
-//        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
-//        if(actionBar != null)
-//        {
-//            actionBar.setTitle("YOU CAN DO IT");
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(item -> {
+                item.setChecked(true);
+                mDrawerLayout.closeDrawers();
+                Log.d("TEST2", "IN");
+                int id = item.getItemId();
+                if (id == R.id.bar_success_percent) {
+                    Toast.makeText(getApplicationContext(), "A", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (id == R.id.bar_random_list) {
+                    Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (id == R.id.bar_change_promise) {
+                    Toast.makeText(getApplicationContext(), "C", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            });
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu)
@@ -62,29 +72,12 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        if(id == R.id.bar_success_percent)
+        if(id == android.R.id.home)
         {
-
-            return true;
-        }
-        else if(id == R.id.bar_random_list)
-        {
-            return true;
-        }
-        else if(id == R.id.bar_change_promise)
-        {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+            Log.d("TEST", "IN");
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    public static void setWindowFlag(Activity activity, final int bits, boolean on) {
-        Window win = activity.getWindow();
-        WindowManager.LayoutParams winParams = win.getAttributes();
-        if (on) {
-            winParams.flags |= bits;
-        } else {
-            winParams.flags &= ~bits;
-        }
-        win.setAttributes(winParams);
     }
 }
