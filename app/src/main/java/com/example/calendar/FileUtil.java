@@ -3,6 +3,8 @@ package com.example.calendar;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -14,6 +16,7 @@ import java.io.OutputStreamWriter;
 
 public class FileUtil {
     private final Context context;
+    AppConstants appConstants = new AppConstants();
 
     public FileUtil(Context context)
     {
@@ -28,7 +31,6 @@ public class FileUtil {
         }
         return false;
     }
-
 
     public void saveDataToFile(String fileName, String key, String value)
     {
@@ -115,5 +117,41 @@ public class FileUtil {
         } else {
             Toast.makeText(context, "No data found in file.", Toast.LENGTH_LONG).show();
         }
+    }
+    public void saveImageToFile(Context context, Bitmap bitmap) {
+        FileOutputStream fos = null;
+        try {
+            fos = context.openFileOutput(appConstants.INTERNAL_THEME_IMAGE_NAME, Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public Bitmap loadImageFromFile(Context context, String filename) {
+        FileInputStream fis = null;
+        Bitmap bitmap = null;
+        try {
+            fis = context.openFileInput(filename);
+            bitmap = BitmapFactory.decodeStream(fis);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return bitmap;
     }
 }

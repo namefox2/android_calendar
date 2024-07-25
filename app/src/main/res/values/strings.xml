@@ -21,4 +21,6 @@
     <string name="ok">확인</string>
     <string name="cancel">취소</string>
     <string name="change_theme">테마 이미지 설정</string>
+    <string name="image_upload">이미지 불러오기</string>
+    <string name="theme_image">theme_image</string>
 </resources>
