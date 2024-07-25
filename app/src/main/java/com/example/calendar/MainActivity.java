@@ -2,7 +2,6 @@ package com.example.calendar;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -13,10 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -28,17 +23,17 @@ public class MainActivity extends AppCompatActivity
     private static final String CUSTOM_DATA_APPLICATION_THEME = "theme";
     private DrawerLayout mDrawerLayout;
     private FileUtil fileUtil;
+    private NavigationAction navigationAction;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fileUtil = new FileUtil(this);
-        String nav_goal = initializeNavigationGoal();
-        Log.d("TEST", "nav_goal:"+nav_goal);
+        navigationAction = new NavigationAction(this);
 
         setContentView(R.layout.activity_main);
 
         setupToolbar();
-        setupNavigationView(nav_goal);
+        setupNavigationView();
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -51,7 +46,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
-    private String initializeNavigationGoal()
+    private String getNavigationGoal()
     {
         boolean internalFileExists = fileUtil.doesFileExistInInternalStorage(this, INTERNAL_FILE_NAME);
         String nav_goal = "80";
@@ -74,7 +69,7 @@ public class MainActivity extends AppCompatActivity
             actionBar.setHomeAsUpIndicator(R.drawable.menu_bar);
         }
     }
-    private void setupNavigationView(String nav_goal) {
+    private void setupNavigationView() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         mDrawerLayout = findViewById(R.id.nav_drawer);
 
@@ -83,7 +78,9 @@ public class MainActivity extends AppCompatActivity
                 mDrawerLayout.closeDrawers();
                 int id = item.getItemId();
                 if (id == R.id.bar_set_goal) {
-                    showAlertDialogSetGoalClicked(nav_goal);
+                    String nav_goal = getNavigationGoal();
+                    Log.d("TEST", "nav_goa1:l"+nav_goal);
+                    navigationAction.showAlertDialogSetGoal(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
                     return true;
                 } else if (id == R.id.bar_random_list) {
                     Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
@@ -94,46 +91,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 return false;
             });
-        }
-    }
-    public void showAlertDialogSetGoalClicked(String nav_goal)
-    {
-        Button button_ok;
-        Button button_cancel;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        final View customLayout = getLayoutInflater().inflate(R.layout.nav_goal_layout, null);
-        builder.setView(customLayout);
-        EditText editText = customLayout.findViewById(R.id.nav_goal_percent);
-
-        editText.setText(nav_goal);
-        button_ok = customLayout.findViewById(R.id.nav_goal_ok);
-        button_cancel = customLayout.findViewById(R.id.nav_goal_cancel);
-
-        AlertDialog dialog = builder.create();
-
-        button_ok.setOnClickListener(v -> handleButtonClick(v, dialog));
-        button_cancel.setOnClickListener(v -> dialog.dismiss());
-
-        dialog.show();
-    }
-
-    private void handleButtonClick(View view, AlertDialog dialog)
-    {
-        if (view.getId() == R.id.nav_goal_ok) {
-            TextView str_num = dialog.findViewById(R.id.nav_goal_percent);
-            assert str_num != null;
-            String nav_goal = str_num.getText().toString();
-            if (nav_goal.isEmpty()) {
-                nav_goal = "80";
-            }
-            dialog.dismiss();
-            fileUtil.saveDataToFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
-            fileUtil.showFileContents(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL);
-        }
-        else if(view.getId() == R.id.nav_goal_cancel)
-        {
-            dialog.dismiss();
         }
     }
 
