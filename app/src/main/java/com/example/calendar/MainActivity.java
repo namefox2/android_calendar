@@ -33,26 +33,27 @@ import java.io.OutputStreamWriter;
 public class MainActivity extends AppCompatActivity
 {
     private static final String INTERNAL_FILE_NAME = "customData.txt";
+    private static final String CUSTOM_DATA_NAVIGATION_GOAL = "goalNumber";
     Toolbar toolbar;
     NavigationView navigationView;
     DrawerLayout mDrawerLayout;
-    String percent_num = "80";
+    String nav_goal = "80";
     AlertDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.includeToolbar);
         setSupportActionBar(toolbar);
 
         boolean internalFileExists = FileUtil.doesFileExistInInternalStorage(this, INTERNAL_FILE_NAME);
         if(!internalFileExists)
         {
-            saveDataToFile(INTERNAL_FILE_NAME, "percent_num", percent_num);
+            saveDataToFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
         }
-        percent_num = getValueFromFile(INTERNAL_FILE_NAME, "percent_num");
-        Log.d("TEST", percent_num);
+        nav_goal = getValueFromFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL);
+        Log.d("TEST", nav_goal);
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null)
@@ -70,8 +71,8 @@ public class MainActivity extends AppCompatActivity
             navigationView.setNavigationItemSelectedListener(item -> {
                 mDrawerLayout.closeDrawers();
                 int id = item.getItemId();
-                if (id == R.id.bar_success_percent) {
-                    showAlertDialogPercentClicked(item);
+                if (id == R.id.bar_set_goal) {
+                    showAlertDialogSetGoalClicked(item);
                     return true;
                 } else if (id == R.id.bar_random_list) {
                     Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
@@ -96,19 +97,19 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void showAlertDialogPercentClicked(MenuItem item)
+    public void showAlertDialogSetGoalClicked(MenuItem item)
     {
         Button button_ok;
         Button button_cancel;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        final View customLayout = getLayoutInflater().inflate(R.layout.success_percent, null);
+        final View customLayout = getLayoutInflater().inflate(R.layout.nav_goal_layout, null);
         builder.setView(customLayout);
-        EditText editText = customLayout.findViewById(R.id.success_number);
+        EditText editText = customLayout.findViewById(R.id.nav_goal_percent);
 
-        editText.setText(percent_num);
-        button_ok = customLayout.findViewById(R.id.success_ok);
-        button_cancel = customLayout.findViewById(R.id.success_cancel);
+        editText.setText(nav_goal);
+        button_ok = customLayout.findViewById(R.id.nav_goal_ok);
+        button_cancel = customLayout.findViewById(R.id.nav_goal_cancel);
 
         View.OnClickListener buttonClickListener = this::handleButtonClick;
 
@@ -121,18 +122,18 @@ public class MainActivity extends AppCompatActivity
 
     private void handleButtonClick(View view)
     {
-        if (view.getId() == R.id.success_ok) {
-            TextView str_num = dialog.findViewById(R.id.success_number);
+        if (view.getId() == R.id.nav_goal_ok) {
+            TextView str_num = dialog.findViewById(R.id.nav_goal_percent);
             assert str_num != null;
-            percent_num = str_num.getText().toString();
-            if (percent_num.isEmpty()) {
-                percent_num = "80";
+            nav_goal = str_num.getText().toString();
+            if (nav_goal.isEmpty()) {
+                nav_goal = "80";
             }
             dialog.dismiss();
-            saveDataToFile(INTERNAL_FILE_NAME, "percent_num", percent_num);
+            saveDataToFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
             showFileContents();
         }
-        else if(view.getId() == R.id.success_cancel)
+        else if(view.getId() == R.id.nav_goal_cancel)
         {
             dialog.dismiss();
         }
@@ -216,7 +217,7 @@ public class MainActivity extends AppCompatActivity
         return value;
     }
     public void showFileContents() {
-        String fileContents = getValueFromFile(INTERNAL_FILE_NAME, "percent_num");
+        String fileContents = getValueFromFile(INTERNAL_FILE_NAME, "nav_goal");
         if (fileContents != null) {
             Toast.makeText(this, "File Contents: " + fileContents, Toast.LENGTH_LONG).show();
         } else {

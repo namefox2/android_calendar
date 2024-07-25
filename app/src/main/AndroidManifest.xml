@@ -4,10 +4,10 @@
 
     <application
         android:theme="@style/AppTheme"
-        android:icon="@mipmap/icon"
+        android:icon="@mipmap/calendar_launcher"
         android:label="CALENDER"
         android:supportsRtl="true"
-        android:roundIcon="@mipmap/icon">
+        android:roundIcon="@mipmap/calendar_launcher">
         <activity android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

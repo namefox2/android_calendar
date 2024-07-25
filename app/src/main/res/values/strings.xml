@@ -15,7 +15,7 @@
     <string name="year_month">%d %d월</string>
     <string name="promise">PROMISE</string>
     <string name="todo">TODO</string>
-    <string name="success_num">성공 확률 지정</string>
+    <string name="nav_set_goal">성공 확률 지정</string>
     <string name="percent">%</string>
     <string name="_80">80</string>
     <string name="ok">확인</string>

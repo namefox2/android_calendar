@@ -10,9 +10,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/success_num"
+            android:text="@string/nav_set_goal"
             android:textSize="20sp"
-            android:id="@+id/success_str"
             android:gravity="center">
         </TextView>
         <LinearLayout
@@ -22,8 +21,8 @@
             android:layout_gravity="center_horizontal">
             <EditText
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/success_number"
+                android:layout_height="50dp"
+                android:id="@+id/nav_goal_percent"
                 android:inputType="number"
                 android:hint="@string/_80"
                 android:autofillHints="80"
@@ -41,17 +40,19 @@
             android:orientation="horizontal"
             android:layout_gravity="center">
             <Button
-                android:id="@+id/success_ok"
+                android:id="@+id/nav_goal_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ok"
+                android:textColor="@color/black"
                 style="?android:attr/buttonBarButtonStyle">
             </Button>
             <Button
-                android:id="@+id/success_cancel"
+                android:id="@+id/nav_goal_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
+                android:textColor="@color/black"
                 style="?android:attr/buttonBarButtonStyle">
             </Button>
         </LinearLayout>

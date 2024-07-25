@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/bar_success_percent"
+        android:id="@+id/bar_set_goal"
         android:title="@string/success_percent"
         android:orderInCategory="0"
-        android:icon="@mipmap/nav_percent"/>
+        android:icon="@mipmap/nav_goal"/>
     <item
         android:id="@+id/bar_random_list"
         android:title="@string/random_list"
