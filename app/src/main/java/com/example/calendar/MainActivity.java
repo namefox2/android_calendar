@@ -8,7 +8,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,68 +21,24 @@ import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-
 public class MainActivity extends AppCompatActivity
 {
     private static final String INTERNAL_FILE_NAME = "customData.txt";
     private static final String CUSTOM_DATA_NAVIGATION_GOAL = "goalNumber";
-    Toolbar toolbar;
-    NavigationView navigationView;
-    DrawerLayout mDrawerLayout;
-    String nav_goal = "80";
-    AlertDialog dialog;
+    private static final String CUSTOM_DATA_APPLICATION_THEME = "theme";
+    private DrawerLayout mDrawerLayout;
+    private FileUtil fileUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fileUtil = new FileUtil(this);
+        String nav_goal = initializeNavigationGoal();
+        Log.d("TEST", "nav_goal:"+nav_goal);
+
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.includeToolbar);
-        setSupportActionBar(toolbar);
-
-        boolean internalFileExists = FileUtil.doesFileExistInInternalStorage(this, INTERNAL_FILE_NAME);
-        if(!internalFileExists)
-        {
-            saveDataToFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
-        }
-        nav_goal = getValueFromFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL);
-        Log.d("TEST", nav_goal);
-
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
-        {
-            actionBar.setDisplayShowCustomEnabled(true);
-            actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.menu_bar);
-        }
-
-        navigationView = findViewById(R.id.nav_view);
-        mDrawerLayout = findViewById(R.id.nav_drawer);
-
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(item -> {
-                mDrawerLayout.closeDrawers();
-                int id = item.getItemId();
-                if (id == R.id.bar_set_goal) {
-                    showAlertDialogSetGoalClicked(item);
-                    return true;
-                } else if (id == R.id.bar_random_list) {
-                    Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if (id == R.id.bar_change_promise) {
-                    Toast.makeText(getApplicationContext(), "C", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
-            });
-        }
+        setupToolbar();
+        setupNavigationView(nav_goal);
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -96,8 +51,52 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+    private String initializeNavigationGoal()
+    {
+        boolean internalFileExists = fileUtil.doesFileExistInInternalStorage(this, INTERNAL_FILE_NAME);
+        String nav_goal = "80";
+        if (!internalFileExists) {
+            fileUtil.saveDataToFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
+        } else {
+            nav_goal = fileUtil.getValueFromFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL);
+        }
+        return nav_goal;
+    }
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.includeToolbar);
+        setSupportActionBar(toolbar);
 
-    public void showAlertDialogSetGoalClicked(MenuItem item)
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.menu_bar);
+        }
+    }
+    private void setupNavigationView(String nav_goal) {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        mDrawerLayout = findViewById(R.id.nav_drawer);
+
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(item -> {
+                mDrawerLayout.closeDrawers();
+                int id = item.getItemId();
+                if (id == R.id.bar_set_goal) {
+                    showAlertDialogSetGoalClicked(nav_goal);
+                    return true;
+                } else if (id == R.id.bar_random_list) {
+                    Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
+                    return true;
+                } else if (id == R.id.bar_change_promise) {
+                    Toast.makeText(getApplicationContext(), "C", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            });
+        }
+    }
+    public void showAlertDialogSetGoalClicked(String nav_goal)
     {
         Button button_ok;
         Button button_cancel;
@@ -111,124 +110,37 @@ public class MainActivity extends AppCompatActivity
         button_ok = customLayout.findViewById(R.id.nav_goal_ok);
         button_cancel = customLayout.findViewById(R.id.nav_goal_cancel);
 
-        View.OnClickListener buttonClickListener = this::handleButtonClick;
+        AlertDialog dialog = builder.create();
 
-        button_ok.setOnClickListener(buttonClickListener);
-        button_cancel.setOnClickListener(buttonClickListener);
+        button_ok.setOnClickListener(v -> handleButtonClick(v, dialog));
+        button_cancel.setOnClickListener(v -> dialog.dismiss());
 
-        dialog = builder.create();
         dialog.show();
     }
 
-    private void handleButtonClick(View view)
+    private void handleButtonClick(View view, AlertDialog dialog)
     {
         if (view.getId() == R.id.nav_goal_ok) {
             TextView str_num = dialog.findViewById(R.id.nav_goal_percent);
             assert str_num != null;
-            nav_goal = str_num.getText().toString();
+            String nav_goal = str_num.getText().toString();
             if (nav_goal.isEmpty()) {
                 nav_goal = "80";
             }
             dialog.dismiss();
-            saveDataToFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
-            showFileContents();
+            fileUtil.saveDataToFile(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
+            fileUtil.showFileContents(INTERNAL_FILE_NAME, CUSTOM_DATA_NAVIGATION_GOAL);
         }
         else if(view.getId() == R.id.nav_goal_cancel)
         {
             dialog.dismiss();
         }
     }
-    public void saveDataToFile(String fileName, String key, String value)
-    {
-        FileOutputStream fos = null;
-        OutputStreamWriter osw = null;
 
-        try {
-            fos = openFileOutput(fileName, MODE_PRIVATE);
-            osw = new OutputStreamWriter(fos);
-            osw.write(key+"="+value+"\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(osw != null)
-            {
-                try {
-                    osw.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    public String getValueFromFile(String fileName, String key)
-    {
-        String value = null;
-        FileInputStream fis = null;
-        InputStreamReader isr = null;
-        BufferedReader reader = null;
-        try {
-            fis = openFileInput(fileName);
-            isr = new InputStreamReader(fis);
-            reader = new BufferedReader(isr);
-
-            String line;
-            while ((line = reader.readLine()) != null)
-            {
-                String[] parts = line.split("=");
-                if(parts.length == 2 && parts[0].equals(key))
-                {
-                    value = parts[1];
-                    break;
-                }
-            }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (isr != null) {
-                try {
-                    isr.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return value;
-    }
-    public void showFileContents() {
-        String fileContents = getValueFromFile(INTERNAL_FILE_NAME, "nav_goal");
-        if (fileContents != null) {
-            Toast.makeText(this, "File Contents: " + fileContents, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "No data found in file.", Toast.LENGTH_LONG).show();
-        }
-    }
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_menu, menu);
-        toolbar.getMenu().clear();
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item)
@@ -240,20 +152,5 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-}
-class FileUtil {
-    public static boolean doesFileExistInInternalStorage(Context context, String fileName) {
-        String[] fileList = context.fileList();
-        for (String file : fileList) {
-            if (file.equals(fileName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public static boolean doesFileExistInExternalStorage(String filePath) {
-        File file = new File(filePath);
-        return file.exists();
     }
 }
