@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -22,27 +21,27 @@ public class NavigationAction {
     private final Context context;
     AppConstants appConstants = new AppConstants();
     ImageView themeImageView;
+    FileUtil fileUtil;
     public NavigationAction(Context context)
     {
         this.context = context;
+        this.fileUtil = new FileUtil(context);
     }
 
     public void showAlertDialogSetGoal(String nav_goal)
     {
-        Button button_ok;
-        Button button_cancel;
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog dialog = builder.create();
 
         LayoutInflater inflater = LayoutInflater.from(context);
         final View customLayout = inflater.inflate(R.layout.nav_goal_layout, null);
         builder.setView(customLayout);
+
         EditText editText = customLayout.findViewById(R.id.nav_goal_percent);
-
         editText.setText(nav_goal);
-        button_ok = customLayout.findViewById(R.id.nav_goal_ok);
-        button_cancel = customLayout.findViewById(R.id.nav_goal_cancel);
 
-        AlertDialog dialog = builder.create();
+        Button button_ok = customLayout.findViewById(R.id.nav_goal_ok);
+        Button button_cancel = customLayout.findViewById(R.id.nav_goal_cancel);
 
         button_ok.setOnClickListener(v -> handleGoalButtonClick(v, dialog));
         button_cancel.setOnClickListener(v -> dialog.dismiss());
@@ -51,19 +50,20 @@ public class NavigationAction {
     }
     public void showAlertDialogSetThemeImage(ActivityResultLauncher<Intent> galleryLauncher)
     {
-        Button button_ok;
-        Button button_cancel;
-        Button image_upload_button;
-        Bitmap bitmap;
+        Bitmap bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
         final View customLayout = inflater.inflate(R.layout.nav_change_theme, null);
         builder.setView(customLayout);
 
+        AlertDialog dialog = builder.create();
+
+        Button button_ok = customLayout.findViewById(R.id.nav_theme_ok);
+        Button button_cancel = customLayout.findViewById(R.id.nav_theme_cancel);
+        Button image_upload_button = customLayout.findViewById(R.id.nav_theme_upload);
+
         themeImageView = customLayout.findViewById(R.id.nav_theme_view);
-        FileUtil fileUtil = new FileUtil(context);
-        bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
         if(bitmap == null)
         {
             Drawable drawable = ResourcesCompat.getDrawable(customLayout.getResources(), R.drawable.default_theme, null);
@@ -71,14 +71,7 @@ public class NavigationAction {
         }
         else themeImageView.setImageBitmap(bitmap);
 
-        button_ok = customLayout.findViewById(R.id.nav_theme_ok);
-        button_cancel = customLayout.findViewById(R.id.nav_theme_cancel);
-        image_upload_button = customLayout.findViewById(R.id.nav_theme_upload);
-
-        AlertDialog dialog = builder.create();
-
         image_upload_button.setOnClickListener(v -> openGallery(galleryLauncher));
-        Log.d("TEST", "5");
         button_ok.setOnClickListener(v -> handleThemeButtonClick(v, dialog));
         button_cancel.setOnClickListener(v -> dialog.dismiss());
 
@@ -86,22 +79,22 @@ public class NavigationAction {
     }
     private void handleGoalButtonClick(View view, AlertDialog dialog)
     {
-        FileUtil fileUtil = new FileUtil(context);
         if (view.getId() == R.id.nav_goal_ok) {
             TextView str_num = dialog.findViewById(R.id.nav_goal_percent);
-            assert str_num != null;
-            String nav_goal = str_num.getText().toString();
-            int navGoalInt = Integer.parseInt(nav_goal);
-            if(navGoalInt < 0 || navGoalInt > 100) {
-                Toast.makeText(context.getApplicationContext(), "0~100 사이 숫자만 입력해주세요.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (nav_goal.isEmpty()) {
-                nav_goal = "80";
+            if(str_num != null) {
+                String nav_goal = str_num.getText().toString();
+
+                int navGoalInt = Integer.parseInt(nav_goal);
+                if (navGoalInt < 0 || navGoalInt > 100) {
+                    Toast.makeText(context.getApplicationContext(), "0~100 사이 숫자만 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (nav_goal.isEmpty()) {
+                    nav_goal = "80";
+                }
+                fileUtil.saveDataToFile(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
             }
             dialog.dismiss();
-            fileUtil.saveDataToFile(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
-//            fileUtil.showFileContents(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_GOAL);
         }
         else if(view.getId() == R.id.nav_goal_cancel)
         {
@@ -110,7 +103,6 @@ public class NavigationAction {
     }
     private void handleThemeButtonClick(View view, AlertDialog dialog)
     {
-        FileUtil fileUtil = new FileUtil(context);
         if (view.getId() == R.id.nav_theme_ok) {
             Bitmap bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_UPLOAD_IMAGE_NAME);
             if(bitmap != null)
@@ -139,5 +131,4 @@ public class NavigationAction {
         if(bitmap != null)
             themeImageView.setImageBitmap(bitmap);
     }
-
 }

@@ -12,7 +12,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -88,7 +87,6 @@ public class MainActivity extends AppCompatActivity
                 int id = item.getItemId();
                 if (id == R.id.bar_set_goal) {
                     String nav_goal = getNavigationGoal();
-                    Log.d("TEST", "nav_goa1:l"+nav_goal);
                     navigationAction.showAlertDialogSetGoal(nav_goal);
                     return true;
                 } else if (id == R.id.bar_random_list) {
@@ -99,7 +97,6 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 } else if (id == R.id.bar_change_theme) {
                     navigationAction.showAlertDialogSetThemeImage(galleryLauncher);
-                    Toast.makeText(getApplicationContext(), "D", Toast.LENGTH_SHORT).show();
                     return true;
                 }
 
