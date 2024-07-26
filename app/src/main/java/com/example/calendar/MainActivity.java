@@ -116,7 +116,9 @@ public class MainActivity extends AppCompatActivity
                         Uri selectedImage = data.getData();
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
-                            fileUtil.saveImageToFile(MainActivity.this, bitmap);
+                            fileUtil.saveImageToFile(MainActivity.this, bitmap, appConstants.INTERNAL_THEME_UPLOAD_IMAGE_NAME);
+                            navigationAction.setThemeImageView(bitmap);
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -126,8 +128,11 @@ public class MainActivity extends AppCompatActivity
 
     public boolean onCreateOptionsMenu(Menu menu)
     {
+        Toolbar toolbar = findViewById(R.id.includeToolbar);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.actionbar_menu, menu);
+        toolbar.getMenu().clear();
+
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item)

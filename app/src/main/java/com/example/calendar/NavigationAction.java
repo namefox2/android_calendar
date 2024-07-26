@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import androidx.core.content.res.ResourcesCompat;
 public class NavigationAction {
     private final Context context;
     AppConstants appConstants = new AppConstants();
+    ImageView themeImageView;
     public NavigationAction(Context context)
     {
         this.context = context;
@@ -56,18 +58,18 @@ public class NavigationAction {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        final View customLayout = inflater.inflate(R.layout.nav_change_image, null);
+        final View customLayout = inflater.inflate(R.layout.nav_change_theme, null);
         builder.setView(customLayout);
 
-        ImageView imageView = customLayout.findViewById(R.id.nav_theme_view);
+        themeImageView = customLayout.findViewById(R.id.nav_theme_view);
         FileUtil fileUtil = new FileUtil(context);
-        bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_FILE_NAME);
+        bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
         if(bitmap == null)
         {
             Drawable drawable = ResourcesCompat.getDrawable(customLayout.getResources(), R.drawable.default_theme, null);
-            imageView.setImageDrawable(drawable);
+            themeImageView.setImageDrawable(drawable);
         }
-        else imageView.setImageBitmap(bitmap);
+        else themeImageView.setImageBitmap(bitmap);
 
         button_ok = customLayout.findViewById(R.id.nav_theme_ok);
         button_cancel = customLayout.findViewById(R.id.nav_theme_cancel);
@@ -76,7 +78,8 @@ public class NavigationAction {
         AlertDialog dialog = builder.create();
 
         image_upload_button.setOnClickListener(v -> openGallery(galleryLauncher));
-        button_ok.setOnClickListener(v -> handleThemeButtonClick(v, dialog, bitmap));
+        Log.d("TEST", "5");
+        button_ok.setOnClickListener(v -> handleThemeButtonClick(v, dialog));
         button_cancel.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
@@ -98,20 +101,23 @@ public class NavigationAction {
             }
             dialog.dismiss();
             fileUtil.saveDataToFile(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_GOAL, nav_goal);
-            fileUtil.showFileContents(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_GOAL);
+//            fileUtil.showFileContents(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_GOAL);
         }
         else if(view.getId() == R.id.nav_goal_cancel)
         {
             dialog.dismiss();
         }
     }
-    private void handleThemeButtonClick(View view, AlertDialog dialog, Bitmap bitmap)
+    private void handleThemeButtonClick(View view, AlertDialog dialog)
     {
         FileUtil fileUtil = new FileUtil(context);
         if (view.getId() == R.id.nav_theme_ok) {
+            Bitmap bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_UPLOAD_IMAGE_NAME);
+            if(bitmap != null)
+            {
+                fileUtil.saveImageToFile(context, bitmap, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
+            }
             dialog.dismiss();
-            // image확인 후 없으면 그냥 return; 있으면 그 이미지 bitmap저장
-//            fileUtil.saveImageToFile(context, bitmap);
         }
         else if(view.getId() == R.id.nav_theme_cancel)
         {
@@ -121,6 +127,17 @@ public class NavigationAction {
     public void openGallery(ActivityResultLauncher<Intent> galleryLauncher) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         galleryLauncher.launch(intent);
+    }
+    public void setThemeImageView(Bitmap bitmap)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View customLayout = inflater.inflate(R.layout.nav_change_theme, null);
+        builder.setView(customLayout);
+
+        if(bitmap != null)
+            themeImageView.setImageBitmap(bitmap);
     }
 
 }
