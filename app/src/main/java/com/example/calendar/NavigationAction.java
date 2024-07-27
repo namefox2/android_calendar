@@ -24,10 +24,12 @@ public class NavigationAction {
     AppConstants appConstants = new AppConstants();
     ImageView themeImageView;
     FileUtil fileUtil;
-    public NavigationAction(Context context)
+    private final MainActivity mainActivity;
+    public NavigationAction(Context context, MainActivity mainActivity)
     {
         this.context = context;
         this.fileUtil = new FileUtil(context);
+        this.mainActivity = mainActivity;
     }
 
     public void showAlertDialogSetGoal(String nav_goal)
@@ -47,6 +49,27 @@ public class NavigationAction {
         AlertDialog dialog = builder.create();
 
         button_ok.setOnClickListener(v -> handleGoalButtonClick(v, dialog));
+        button_cancel.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
+    public void showAlertDialogSetPromise(String promise)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View customLayout = inflater.inflate(R.layout.nav_change_promise, null);
+        builder.setView(customLayout);
+
+        EditText editText = customLayout.findViewById(R.id.nav_promise_edittext);
+        editText.setText(promise);
+
+        Button button_ok = customLayout.findViewById(R.id.nav_promise_ok);
+        Button button_cancel = customLayout.findViewById(R.id.nav_promise_cancel);
+
+        AlertDialog dialog = builder.create();
+
+        button_ok.setOnClickListener(v -> handlePromiseButtonClick(v, dialog));
         button_cancel.setOnClickListener(v -> dialog.dismiss());
 
         dialog.show();
@@ -101,11 +124,21 @@ public class NavigationAction {
             }
             dialog.dismiss();
         }
-        else if(view.getId() == R.id.nav_goal_cancel)
-        {
+    }
+    private void handlePromiseButtonClick(View view, AlertDialog dialog)
+    {
+        if (view.getId() == R.id.nav_promise_ok) {
+            TextView promise = dialog.findViewById(R.id.nav_promise_edittext);
+            String promise_text;
+            if(promise != null) {
+                promise_text = promise.getText().toString();
+                fileUtil.saveDataToFile(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_PROMISE, promise_text);
+                mainActivity.changeToolbarTitle(promise_text);
+            }
             dialog.dismiss();
         }
     }
+
     private void handleThemeButtonClick(View view, AlertDialog dialog)
     {
         if (view.getId() == R.id.nav_theme_ok) {
@@ -121,10 +154,6 @@ public class NavigationAction {
                     dialog.dismiss();
                 });
             }).start();
-        }
-        else if(view.getId() == R.id.nav_theme_cancel)
-        {
-            dialog.dismiss();
         }
     }
     public void openGallery(ActivityResultLauncher<Intent> galleryLauncher) {

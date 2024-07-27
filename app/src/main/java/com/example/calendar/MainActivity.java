@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import android.graphics.Bitmap;
@@ -34,13 +35,14 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fileUtil = new FileUtil(this);
-        navigationAction = new NavigationAction(this);
+        navigationAction = new NavigationAction(this, this);
 
         setContentView(R.layout.activity_main);
 
         setupToolbar();
         setupNavigationView();
         setupGalleryLauncher();
+        changeToolbarTitle(getNavigationPromise());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -64,6 +66,17 @@ public class MainActivity extends AppCompatActivity
         }
         return nav_goal;
     }
+    private String getNavigationPromise()
+    {
+        boolean internalFileExists = fileUtil.doesFileExistInInternalStorage(this, appConstants.INTERNAL_FILE_NAME);
+        String promise = "Promise";
+        if (!internalFileExists) {
+            fileUtil.saveDataToFile(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_PROMISE, promise);
+        } else {
+            promise = fileUtil.getValueFromFile(appConstants.INTERNAL_FILE_NAME, appConstants.CUSTOM_DATA_NAVIGATION_PROMISE);
+        }
+        return promise;
+    }
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.includeToolbar);
         setSupportActionBar(toolbar);
@@ -74,6 +87,12 @@ public class MainActivity extends AppCompatActivity
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.menu_bar);
+        }
+    }
+    public void changeToolbarTitle(String newTitle) {
+        TextView toolbarTitle = findViewById(R.id.toolBarTitle);
+        if (toolbarTitle != null) {
+            toolbarTitle.setText(newTitle);
         }
     }
     private void setupNavigationView() {
@@ -92,6 +111,8 @@ public class MainActivity extends AppCompatActivity
                     Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (id == R.id.bar_change_promise) {
+                    String promise = getNavigationPromise();
+                    navigationAction.showAlertDialogSetPromise(promise);
                     Toast.makeText(getApplicationContext(), "C", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (id == R.id.bar_change_theme) {
