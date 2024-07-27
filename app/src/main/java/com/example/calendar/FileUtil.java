@@ -5,12 +5,14 @@ import static android.content.Context.MODE_PRIVATE;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
@@ -153,4 +155,43 @@ public class FileUtil {
         }
         return bitmap;
     }
+    public Bitmap getScaledBitmap(Uri selectedImage, int reqWidth, int reqHeight) throws IOException {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+        InputStream inputStream = context.getContentResolver().openInputStream(selectedImage);
+        if(inputStream != null) {
+            BitmapFactory.decodeStream(inputStream, null, options);
+            inputStream.close();
+        }
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+        inputStream = context.getContentResolver().openInputStream(selectedImage);
+        Bitmap scaledBitmap = BitmapFactory.decodeStream(inputStream, null, options);
+        if(inputStream != null) {
+            inputStream.close();
+        }
+
+        return scaledBitmap;
+    }
+
+    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+    public Bitmap getResizedBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+    }
+
 }

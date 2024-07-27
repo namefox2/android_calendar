@@ -1,10 +1,12 @@
 package com.example.calendar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,6 @@ public class NavigationAction {
     public void showAlertDialogSetGoal(String nav_goal)
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        AlertDialog dialog = builder.create();
 
         LayoutInflater inflater = LayoutInflater.from(context);
         final View customLayout = inflater.inflate(R.layout.nav_goal_layout, null);
@@ -43,6 +44,8 @@ public class NavigationAction {
         Button button_ok = customLayout.findViewById(R.id.nav_goal_ok);
         Button button_cancel = customLayout.findViewById(R.id.nav_goal_cancel);
 
+        AlertDialog dialog = builder.create();
+
         button_ok.setOnClickListener(v -> handleGoalButtonClick(v, dialog));
         button_cancel.setOnClickListener(v -> dialog.dismiss());
 
@@ -50,7 +53,6 @@ public class NavigationAction {
     }
     public void showAlertDialogSetThemeImage(ActivityResultLauncher<Intent> galleryLauncher)
     {
-        Bitmap bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -64,14 +66,17 @@ public class NavigationAction {
         Button image_upload_button = customLayout.findViewById(R.id.nav_theme_upload);
 
         themeImageView = customLayout.findViewById(R.id.nav_theme_view);
-        if(bitmap == null)
-        {
-            Drawable drawable = ResourcesCompat.getDrawable(customLayout.getResources(), R.drawable.default_theme, null);
-            themeImageView.setImageDrawable(drawable);
-        }
-        else themeImageView.setImageBitmap(bitmap);
+        new Thread(() -> {
+            Bitmap bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
+            ((Activity) context).runOnUiThread(()-> {
+                if (bitmap == null) {
+                    Drawable drawable = ResourcesCompat.getDrawable(customLayout.getResources(), R.drawable.default_theme, null);
+                    themeImageView.setImageDrawable(drawable);
+                } else themeImageView.setImageBitmap(bitmap);
+            });
+        }).start();
 
-        image_upload_button.setOnClickListener(v -> openGallery(galleryLauncher));
+        new Thread(() -> image_upload_button.setOnClickListener(v -> openGallery(galleryLauncher))).start();
         button_ok.setOnClickListener(v -> handleThemeButtonClick(v, dialog));
         button_cancel.setOnClickListener(v -> dialog.dismiss());
 
@@ -104,12 +109,18 @@ public class NavigationAction {
     private void handleThemeButtonClick(View view, AlertDialog dialog)
     {
         if (view.getId() == R.id.nav_theme_ok) {
-            Bitmap bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_UPLOAD_IMAGE_NAME);
-            if(bitmap != null)
-            {
-                fileUtil.saveImageToFile(context, bitmap, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
-            }
-            dialog.dismiss();
+            new Thread(()-> {
+                int reqWidth = 800;
+                int reqHeight = 800;
+                Bitmap bitmap = fileUtil.loadImageFromFile(context, appConstants.INTERNAL_THEME_UPLOAD_IMAGE_NAME);
+                ((Activity) context).runOnUiThread(()->{
+                    if (bitmap != null) {
+                        Bitmap resizeBitmap = fileUtil.getResizedBitmap(bitmap, reqWidth, reqHeight);
+                        fileUtil.saveImageToFile(context, resizeBitmap, appConstants.INTERNAL_THEME_CURRENT_IMAGE_NAME);
+                    }
+                    dialog.dismiss();
+                });
+            }).start();
         }
         else if(view.getId() == R.id.nav_theme_cancel)
         {

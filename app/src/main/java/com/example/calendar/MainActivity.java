@@ -11,7 +11,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -112,10 +111,12 @@ public class MainActivity extends AppCompatActivity
                         Intent data = result.getData();
                         Uri selectedImage = data.getData();
                         try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+                            int reqWidth = 800;
+                            int reqHeight = 800;
+
+                            Bitmap bitmap = fileUtil.getScaledBitmap(selectedImage, reqWidth, reqHeight);
                             fileUtil.saveImageToFile(MainActivity.this, bitmap, appConstants.INTERNAL_THEME_UPLOAD_IMAGE_NAME);
                             navigationAction.setThemeImageView(bitmap);
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
