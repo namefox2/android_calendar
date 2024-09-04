@@ -113,10 +113,6 @@ public class MainActivity extends AppCompatActivity
                 } else if (id == R.id.bar_change_promise) {
                     String promise = getNavigationPromise();
                     navigationAction.showAlertDialogSetPromise(promise);
-                    Toast.makeText(getApplicationContext(), "C", Toast.LENGTH_SHORT).show();
-                    return true;
-                } else if (id == R.id.bar_change_theme) {
-                    navigationAction.showAlertDialogSetThemeImage(galleryLauncher);
                     return true;
                 }
 
@@ -137,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 
                             Bitmap bitmap = fileUtil.getScaledBitmap(selectedImage, reqWidth, reqHeight);
                             fileUtil.saveImageToFile(MainActivity.this, bitmap, appConstants.INTERNAL_THEME_UPLOAD_IMAGE_NAME);
-                            navigationAction.setThemeImageView(bitmap);
+//                            navigationAction.setThemeImageView(bitmap);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

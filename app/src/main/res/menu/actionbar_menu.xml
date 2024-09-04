@@ -15,9 +15,4 @@
         android:title="@string/change_promise"
         android:orderInCategory="2"
         android:icon="@mipmap/nav_promise"/>
-    <item
-        android:id="@+id/bar_change_theme"
-        android:title="@string/change_theme"
-        android:orderInCategory="3"
-        android:icon="@drawable/image"/>
 </menu>
