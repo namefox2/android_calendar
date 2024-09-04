@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/nav_goal_layout">
+    android:id="@+id/nav_goal_layout"
+    android:theme="@style/CustomTheme">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +14,8 @@
             android:layout_height="wrap_content"
             android:text="@string/nav_set_goal"
             android:textSize="20sp"
-            android:gravity="center">
+            android:gravity="center"
+            style="@style/TextViewTheme">
         </TextView>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -32,7 +34,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/percent">
+                android:text="@string/percent"
+                style="@style/TextViewTheme">
             </TextView>
         </LinearLayout>
         <LinearLayout
@@ -45,16 +48,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ok"
-                android:textColor="@color/black"
-                style="?android:attr/buttonBarButtonStyle">
+                style="@style/ButtonTheme">
             </Button>
             <Button
                 android:id="@+id/nav_goal_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
-                android:textColor="@color/black"
-                style="?android:attr/buttonBarButtonStyle">
+                style="@style/ButtonTheme">
             </Button>
         </LinearLayout>
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="mutedColor" format="color"/>
+    <attr name="darkMutedColor" format="color"/>
+    <attr name="lightMutedColor" format="color"/>
+    <declare-styleable name="CustomTheme">
+        <attr name="textViewStyle" format="reference"/>
+        <attr name="buttonStyle" format="reference"/>
+        <attr name="toolbarStyle" format="reference"/>
+    </declare-styleable>
+</resources>

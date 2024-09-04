@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/nav_change_promise">
+    android:id="@+id/nav_change_promise"
+    android:theme="@style/CustomTheme">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,7 +13,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/my_promise"/>
+            android:text="@string/my_promise"
+            style="@style/TextViewTheme"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,13 +30,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ok"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/ButtonTheme"
                 android:id="@+id/nav_promise_ok"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
-                style="?android:attr/buttonBarButtonStyle"
+                style="@style/ButtonTheme"
                 android:id="@+id/nav_promise_cancel"/>
         </LinearLayout>
     </LinearLayout>
