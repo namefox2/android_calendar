@@ -24,4 +24,8 @@
     <string name="image_upload">이미지 불러오기</string>
     <string name="theme_image">theme_image</string>
     <string name="my_promise">나의 다짐</string>
+    <string name="random_list_head">RANDOM LIST</string>
+    <string name="add_list">Add List</string>
+    <string name="category">CATEGORY</string>
+    <string name="item">항목</string>
 </resources>

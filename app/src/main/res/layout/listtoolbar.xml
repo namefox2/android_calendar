@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/actionBarSize"
+    style="@style/ToolbarTheme"
+    android:theme="@style/CustomTheme">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:contentDescription="@string/add_list"
+        android:src="@drawable/plus_button"
+        android:background="@drawable/plus_button"
+        android:layout_marginEnd="10dp"
+        android:id="@+id/list_plus">
+    </ImageButton>
+
+</androidx.appcompat.widget.Toolbar>

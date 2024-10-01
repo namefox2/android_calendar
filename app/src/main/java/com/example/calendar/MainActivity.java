@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -108,7 +107,8 @@ public class MainActivity extends AppCompatActivity
                     navigationAction.showAlertDialogSetGoal(nav_goal);
                     return true;
                 } else if (id == R.id.bar_random_list) {
-                    Toast.makeText(getApplicationContext(), "B", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, randomListPage.class);
+                    startActivity(intent);
                     return true;
                 } else if (id == R.id.bar_change_promise) {
                     String promise = getNavigationPromise();
