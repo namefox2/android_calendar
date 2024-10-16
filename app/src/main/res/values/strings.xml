@@ -28,4 +28,6 @@
     <string name="add_list">Add List</string>
     <string name="category">CATEGORY</string>
     <string name="item">항목</string>
+    <string name="aboutLink">관련링크</string>
+    <string name="tag">태그</string>
 </resources>

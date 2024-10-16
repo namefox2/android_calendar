@@ -7,5 +7,10 @@
         <attr name="textViewStyle" format="reference"/>
         <attr name="buttonStyle" format="reference"/>
         <attr name="toolbarStyle" format="reference"/>
+        <attr name="tableRowStyle" format="reference"/>
+        <attr name="tableTextStyle" format="reference"/>
+        <attr name="CustomEditTextStyle" format="reference"/>
+        <attr name="tableNameStyle" format="reference"/>
+
     </declare-styleable>
 </resources>
