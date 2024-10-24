@@ -50,6 +50,7 @@
         <item name="toolbarStyle">@color/accentColor</item>
         <item name="tableNameStyle">@style/TableNameTheme</item>
         <item name="CustomEditTextStyle">@style/CustomEditTextTheme</item>
+        <item name="CustomTableStyle">@style/TableTheme</item>
     </style>
 
     <style name="ButtonTheme" parent="Widget.AppCompat.Button">
@@ -67,6 +68,10 @@
         <item name="android:background">?attr/toolbarStyle</item>
     </style>
 
+    <style name="TableTheme">
+        <item name="android:background">#C66ABAB2</item>
+    </style>
+
     <style name="TableNameTheme">
         <item name="android:background">@color/mutedColor</item>
         <item name="android:padding">15dp</item>
@@ -76,6 +81,6 @@
         <item name="borderWidth">3dp</item>
     </style>
     <style name="CustomEditTextTheme">
-        <item name="android:background">@drawable/edittext_underline</item>
+        <item name="android:background">@drawable/table_border</item>
     </style>
 </resources>

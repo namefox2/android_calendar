@@ -72,7 +72,7 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:id="@+id/linkEdit"
+                android:id="@+id/item_link"
                 app:layout_constraintEnd_toStartOf="@+id/category"
                 app:layout_constraintEnd_toEndOf="@+id/addListLayout"
                 app:layout_constraintTop_toTopOf="@+id/addListLayout"
@@ -93,7 +93,7 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:id="@+id/tagEdit"
+                android:id="@+id/item_tag"
                 app:layout_constraintEnd_toStartOf="@+id/category"
                 app:layout_constraintEnd_toEndOf="@+id/addListLayout"
                 app:layout_constraintTop_toTopOf="@+id/addListLayout"

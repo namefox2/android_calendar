@@ -11,6 +11,6 @@
         <attr name="tableTextStyle" format="reference"/>
         <attr name="CustomEditTextStyle" format="reference"/>
         <attr name="tableNameStyle" format="reference"/>
-
+        <attr name="CustomTableStyle" format="reference"/>
     </declare-styleable>
 </resources>

@@ -50,15 +50,17 @@ public class randomListPage extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText category = dialogView.findViewById(R.id.item_category);
                         EditText name = dialogView.findViewById(R.id.item_name);
+                        EditText link = dialogView.findViewById(R.id.item_link);
                         String category_v = category.getText().toString();
                         String name_v = name.getText().toString();
+                        String link_v = link.getText().toString();
 
-                        db.itemDao().insert(new listDbItem(category_v, name_v));
+                        db.itemDao().insert(new listDbItem(category_v, name_v, link_v));
                         itemList = db.itemDao().getAllItems();
                         itemAdapter.setItems(itemList);
-                        itemAdapter.notifyItemInserted(itemList.size() - 1);
+                        itemAdapter.notifyItemInserted(itemList.size());
 
-                        Log.d("TEST", category_v);
+//                        Log.d("TEST", category_v);
                         //remove
 //                        itemList.remove(position);
 //                        adapter.notifyItemRemoved(position);

@@ -1,5 +1,6 @@
 package com.example.calendar;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,7 @@ public class listItemAdapter extends RecyclerView.Adapter<listItemAdapter.ItemVi
             holder.numTextView.setText(String.valueOf(currentItem.id));
             holder.nameTextView.setText(currentItem.name);
             holder.categoryTextView.setText(currentItem.category);
+            holder.linkTextView.setText(currentItem.link);
         }
     }
 
@@ -57,12 +59,14 @@ public class listItemAdapter extends RecyclerView.Adapter<listItemAdapter.ItemVi
         public TextView nameTextView;
         public TextView categoryTextView;
         public TextView numTextView;
+        public TextView linkTextView;
 
         public ItemViewHolder(View itemView, boolean isHeader) {
             super(itemView);
             numTextView = itemView.findViewById(R.id.numTextView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
+            linkTextView = itemView.findViewById(R.id.linkTextView);
         }
     }
 }
