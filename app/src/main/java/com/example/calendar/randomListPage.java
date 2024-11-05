@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -81,6 +83,10 @@ public class randomListPage extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        int color = ContextCompat.getColor(this, R.color.grayMuteColor);
+        int height = 2;
+        recyclerView.addItemDecoration(new CustomDividerItemDecoration(color, height));
         recyclerView.setAdapter(itemAdapter);
     }
 

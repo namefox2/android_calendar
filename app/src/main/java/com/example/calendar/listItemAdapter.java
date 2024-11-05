@@ -43,7 +43,6 @@ public class listItemAdapter extends RecyclerView.Adapter<listItemAdapter.ItemVi
         if(position == 0) {
         } else {
             listDbItem currentItem = itemList.get(position - 1);
-            holder.numTextView.setText(String.valueOf(currentItem.id));
             holder.nameTextView.setText(currentItem.name);
             holder.categoryTextView.setText(currentItem.category);
             holder.linkTextView.setText(currentItem.link);
@@ -58,12 +57,10 @@ public class listItemAdapter extends RecyclerView.Adapter<listItemAdapter.ItemVi
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public TextView categoryTextView;
-        public TextView numTextView;
         public TextView linkTextView;
 
         public ItemViewHolder(View itemView, boolean isHeader) {
             super(itemView);
-            numTextView = itemView.findViewById(R.id.numTextView);
             nameTextView = itemView.findViewById(R.id.nameTextView);
             categoryTextView = itemView.findViewById(R.id.categoryTextView);
             linkTextView = itemView.findViewById(R.id.linkTextView);

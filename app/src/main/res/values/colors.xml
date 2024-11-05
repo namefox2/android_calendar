@@ -8,4 +8,5 @@
     <color name="mutedColor">#088F82</color>
     <color name="darkMutedColor">#4A03DAC5</color>
     <color name="lightMutedColor">#9E9E9E</color>
+    <color name="grayMuteColor">#6F7E7C</color>
 </resources>

@@ -30,4 +30,8 @@
     <string name="item">항목</string>
     <string name="aboutLink">관련링크</string>
     <string name="tag">태그</string>
+    <string name="link_upper">LINK</string>
+    <string name="item_upper">ITEM</string>
+    <string name="category_upper">CATEGORY</string>
+    <string name="number_no">No.</string>
 </resources>
